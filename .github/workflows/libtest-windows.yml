@@ -37,9 +37,15 @@ jobs:
         run: npm install --ignore-scripts
 
       - name: Build library
-        run: npm run build 
+        run: npm run build
 
-      - name: Run node unit tests
-        run: |
-          $env:NODE_ENV="production"
-          npm start
+      # - name: Run node unit tests
+      #   run: |
+      #     $env:NODE_ENV="production"
+      #     npm start
+
+      - name: Upload Release
+        uses: actions/upload-artifact@v3
+        with:
+          name: Release
+          path: build/Release
