@@ -1,32 +1,14 @@
+#include <assert.h>
+#include <node_api.h>
 
-#include <napi.h>
+static napi_value Init(napi_env env, napi_value /* exports */) {
+  napi_status status;
+  napi_value result;
 
-using namespace Napi;
+  status = napi_create_double(env, 200000, &result);
+  assert(status == napi_ok);
 
-
-void initLib(const Napi::CallbackInfo &info)
-{
-  Napi::Env env = info.Env();
-  double timedelay = 200000;
-  auto val = Napi::Value::From(env, timedelay);
-  printf("val %lg %lg\n", val.ToNumber().DoubleValue(), timedelay);
-  if (val.ToNumber().DoubleValue() != timedelay) {
-    Napi::Error::New(env, "Val does not match! " +
-                              std::to_string(val.ToNumber().DoubleValue()))
-        .ThrowAsJavaScriptException();
-    return;
-  }
-  return;
+  return result;
 }
 
-
-Napi::Object Init(Napi::Env env, Napi::Object exports)
-{
-    Napi::Function initna = Function::New<initLib>(env);
-    exports.Set("initLib", initna);
-
-    // env.SetInstanceData<Http3Constructors>(constr);
-    return exports;
-}
-
-NODE_API_MODULE(webtransport, Init)
+NAPI_MODULE(test, Init)

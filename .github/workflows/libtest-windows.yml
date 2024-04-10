@@ -31,54 +31,18 @@ jobs:
       - name: Set up NodeJS
         uses: actions/setup-node@v3
         with:
-          node-version: 18
+          node-version: 20.8.0 # updating this needs updating build-clang++.ps1
 
       - name: Install dependencies
         run: npm install --ignore-scripts
 
       - name: Build library
-        run: npm run build-2022
+        run: npm run build
 
-      - name: Run node unit tests
+      - name: Run test - clang++
         run: |
-          $env:NODE_ENV="production"
-          npm start
+          node index.js ./build/test-clang++.node
 
-      # - name: Upload Release
-      #   uses: actions/upload-artifact@v3
-      #   with:
-      #     name: Release
-      #     path: build/Release
-  build-windows-2019:
-    # The type of runner that the job will run on
-    runs-on: windows-2019
-
-    # Steps represent a sequence of tasks that will be executed as part of the job
-    steps:
-
-      # Checks-out your repository under $GITHUB_WORKSPACE, so your job can access it
-      - uses: actions/checkout@v3
-        with:
-          submodules: recursive
-
-      - name: Set up NodeJS
-        uses: actions/setup-node@v3
-        with:
-          node-version: 18
-
-      - name: Install dependencies
-        run: npm install --ignore-scripts
-
-      - name: Build library
-        run: npm run build-2019
-
-      - name: Run node unit tests
+      - name: Run test - clangcl
         run: |
-          $env:NODE_ENV="production"
-          npm start
-
-      # - name: Upload Release
-      #   uses: actions/upload-artifact@v3
-      #   with:
-      #     name: Release
-      #     path: build/Release
+          node index.js ./build/Release/test-clangcl.node
