@@ -3,7 +3,11 @@ Remove-Item build\test.node, build\main.o -ErrorAction Ignore
 $NodeVersion   = "20.8.0" # updating this needs updating libtest-windows.yml
 $NodeIncFolder = "$env:USERPROFILE\.cmake-js\node-x64\v$NodeVersion\include\node"
 
-$cxx = 'clang++.exe'
+$cxx = "C:\Program Files\Microsoft Visual Studio\2022\Enterprise\VC\Tools\Llvm\x64\bin\clang++.exe"
+
+if (!(Test-Path $cxx)) {
+    $cxx = "C:\Program Files\Microsoft Visual Studio\2022\Community\VC\Tools\Llvm\x64\bin\clang++.exe"
+}
 
 if (Test-Path -Path $NodeIncFolder) {
     & $cxx -c -I"$NodeIncFolder" -O2 -fexceptions -fno-omit-frame-pointer -fno-rtti -o build\main.o main.cc
